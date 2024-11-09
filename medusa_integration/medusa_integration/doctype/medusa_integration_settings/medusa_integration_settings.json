@@ -1,0 +1,60 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-10-27 17:16:58.344515",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "api_settings_section",
+  "enable_api",
+  "medusa_store_url",
+  "secret_api_key"
+ ],
+ "fields": [
+  {
+   "fieldname": "api_settings_section",
+   "fieldtype": "Section Break",
+   "label": "API Settings"
+  },
+  {
+   "fieldname": "secret_api_key",
+   "fieldtype": "Password",
+   "label": "Secret API Key"
+  },
+  {
+   "fieldname": "medusa_store_url",
+   "fieldtype": "Data",
+   "label": "Medusa Store URL",
+   "options": "URL"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_api",
+   "fieldtype": "Check",
+   "label": "Enable API"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-11-08 02:22:54.270033",
+ "modified_by": "Administrator",
+ "module": "Medusa Integration",
+ "name": "Medusa Integration Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
