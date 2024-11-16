@@ -10,8 +10,7 @@ from frappe.utils.nestedset import NestedSet
 class MedusaItemCategory(NestedSet):
 
     def before_insert(self):
-        if not self.handle or not self.handle.strip():
-            self.prepare_product_handle()
+        self.prepare_product_handle()
 
         data = self.get_payload_data()
 
@@ -22,8 +21,7 @@ class MedusaItemCategory(NestedSet):
         self.medusa_id = res_data["product_category"]["id"]
 
     def before_save(self):
-        if not self.handle or not self.handle.strip():
-            self.prepare_product_handle()
+        self.prepare_product_handle()
 
         if not self.is_new() and self.medusa_id:
             data = self.get_payload_data()
@@ -38,14 +36,17 @@ class MedusaItemCategory(NestedSet):
                 return
 
     def prepare_product_handle(self):
-        slug = cleanup_page_name(self.category_name).replace("_", "-")
-        if self.parent_medusa_item_category:
-            parent = frappe.get_doc(
-                "Medusa Item Category", self.parent_medusa_item_category
-            )
-            self.handle = "{0}/{1}".format(parent.handle, slug)
+        if not self.handle or not self.handle.strip():
+            slug = cleanup_page_name(self.category_name).replace("_", "-")
+            if self.parent_medusa_item_category:
+                parent = frappe.get_doc(
+                    "Medusa Item Category", self.parent_medusa_item_category
+                )
+                self.handle = "{0}/{1}".format(parent.handle, slug)
+            else:
+                self.handle = "{0}".format(slug)
         else:
-            self.handle = "/{0}".format(slug)
+            self.handle = self.handle.lstrip("/")
 
     def get_payload_data(self):
         data = {
