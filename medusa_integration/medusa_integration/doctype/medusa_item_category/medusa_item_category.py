@@ -2,15 +2,16 @@
 # For license information, please see license.txt
 
 import frappe
-from frappe.website.utils import cleanup_page_name
+import re
 from medusa_integration.medusa_api.product_category import create, delete, update
+from medusa_integration.utils import generate_slug
 from frappe.utils.nestedset import NestedSet
 
 
 class MedusaItemCategory(NestedSet):
 
     def before_insert(self):
-        self.prepare_product_handle()
+        self.prepare_category_handle()
 
         data = self.get_payload_data()
 
@@ -21,7 +22,7 @@ class MedusaItemCategory(NestedSet):
         self.medusa_id = res_data["product_category"]["id"]
 
     def before_save(self):
-        self.prepare_product_handle()
+        self.prepare_category_handle()
 
         if not self.is_new() and self.medusa_id:
             data = self.get_payload_data()
@@ -35,18 +36,18 @@ class MedusaItemCategory(NestedSet):
             if not res:
                 return
 
-    def prepare_product_handle(self):
+    def prepare_category_handle(self):
         if not self.handle or not self.handle.strip():
-            slug = cleanup_page_name(self.category_name).replace("_", "-")
+            slug = generate_slug(self.category_name)
             if self.parent_medusa_item_category:
                 parent = frappe.get_doc(
                     "Medusa Item Category", self.parent_medusa_item_category
                 )
-                self.handle = "{0}/{1}".format(parent.handle, slug)
-            else:
-                self.handle = "{0}".format(slug)
+                slug = "{0}/{1}".format(parent.handle, slug)
         else:
-            self.handle = self.handle.lstrip("/")
+            slug = generate_slug(self.handle, replace_slash=False)
+
+        self.handle = slug.strip("/-")
 
     def get_payload_data(self):
         data = {

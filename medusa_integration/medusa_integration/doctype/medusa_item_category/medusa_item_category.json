@@ -60,6 +60,7 @@
    "reqd": 1
   },
   {
+   "description": "To auto-generate, leave the field empty",
    "fieldname": "handle",
    "fieldtype": "Data",
    "label": "Handle",
@@ -111,7 +112,7 @@
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2024-11-06 17:52:43.104626",
+ "modified": "2024-11-18 16:37:35.638817",
  "modified_by": "Administrator",
  "module": "Medusa Integration",
  "name": "Medusa Item Category",
